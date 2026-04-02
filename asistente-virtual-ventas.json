@@ -1,0 +1,1243 @@
+{
+  "name": "asistente-virtual-ventas",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "f1e2d3c4-b5a6-7890-abcd-123456789012",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "looseTypeValidation": true
+        }
+      },
+      "id": "7e6d05bf-f519-428e-a133-517671022c1d",
+      "name": "¿Estadística Ya Existe?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -11120,
+        2432
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_BASE_ID"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_TABLE_ESTADISTICAS_ID"
+        },
+        "filterByFormula": "AND({Thread ID}='={{ $json.threadId }}', {Producto Consultado}='={{ $json.producto }}')",
+        "options": {}
+      },
+      "id": "d12a200c-ffe5-4b19-823a-21af7c2709ba",
+      "name": "Airtable - Buscar Estadística Existente",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -11360,
+        2432
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "XzhOW4GQoOpwkoN9",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a054b48a-8019-4c25-bd94-5a3abb098418",
+              "leftValue": "={{ $('Código - Extraer Respuesta').item.json.nombreCliente }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -12832,
+        2432
+      ],
+      "id": "104b5eab-8728-4c73-bed2-8c27caa89216",
+      "name": "¿Tiene Nombre?"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "YOUR_AIRTABLE_BASE_ID",
+          "mode": "list",
+          "cachedResultName": "Asistente Virtual Ventas",
+          "cachedResultUrl": "https://airtable.com/YOUR_AIRTABLE_BASE_ID"
+        },
+        "table": {
+          "__rl": true,
+          "value": "YOUR_AIRTABLE_TABLE_HILOS_ID",
+          "mode": "list",
+          "cachedResultName": "Hilos",
+          "cachedResultUrl": "https://airtable.com/YOUR_AIRTABLE_BASE_ID/YOUR_AIRTABLE_TABLE_HILOS_ID"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Airtable - Buscar Hilo').item.json.id ?? $('Airtable - Crear Hilo').item.json.id }}",
+            "Nombre Cliente": "={{ $('Código - Extraer Respuesta').item.json.nombreCliente }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "HubSpot Thread ID",
+              "displayName": "HubSpot Thread ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha Creación",
+              "displayName": "Fecha Creación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Nombre Cliente",
+              "displayName": "Nombre Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -12608,
+        2304
+      ],
+      "id": "66e4bdf9-956c-4ef8-a66c-4477061acfb4",
+      "name": "Airtable - Actualizar Nombre Cliente",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "XzhOW4GQoOpwkoN9",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "base": {
+          "__rl": true,
+          "value": "YOUR_AIRTABLE_BASE_ID",
+          "mode": "list",
+          "cachedResultName": "Asistente Virtual Ventas",
+          "cachedResultUrl": "https://airtable.com/YOUR_AIRTABLE_BASE_ID"
+        },
+        "table": {
+          "__rl": true,
+          "value": "YOUR_AIRTABLE_TABLE_HILOS_ID",
+          "mode": "list",
+          "cachedResultName": "Hilos",
+          "cachedResultUrl": "https://airtable.com/YOUR_AIRTABLE_BASE_ID/YOUR_AIRTABLE_TABLE_HILOS_ID"
+        },
+        "id": "={{ $('Airtable - Buscar Hilo').item.json.id ?? $('Airtable - Crear Hilo').item.json.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -11152,
+        2032
+      ],
+      "id": "01ed4be9-ae3e-4f11-bd77-b18970fd4420",
+      "name": "Airtable - Obtener Datos del Hilo",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "XzhOW4GQoOpwkoN9",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_BASE_ID"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_TABLE_ESTADISTICAS_ID"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Producto Consultado": "={{ $('Detectar Productos Consultados').item.json.producto }}",
+            "Thread ID": "={{ $('Detectar Productos Consultados').item.json.threadId }}",
+            "Fecha": "={{ $('Detectar Productos Consultados').item.json.fecha }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Thread ID",
+              "displayName": "Thread ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Producto Consultado",
+              "displayName": "Producto Consultado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha",
+              "displayName": "Fecha",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "96820e2b-692a-4573-8c72-40f89cb6060a",
+      "name": "Airtable - Guardar Estadística",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -10864,
+        2416
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "XzhOW4GQoOpwkoN9",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "d46d598a-4cc7-463b-bb1a-04bda16f7039",
+              "leftValue": "={{ $json.skip }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c71994a9-4041-4da2-b004-968b96415a84",
+      "name": "¿Hay Productos?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -11616,
+        2448
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const reply = $('Airtable - Guardar Respuesta del Asistente').item.json.Contenido || \n              $('Airtable - Guardar Respuesta del Asistente').item.json.fields?.Contenido || \n              $('Código - Extraer Respuesta').item.json.reply;\n\nconst threadId = $('Airtable - Buscar Hilo').item.json.id || $('Airtable - Crear Hilo').item.json.id;\n\nconst productos = [\n  'Vestido Floral', 'Vestido Satinado Negro', 'Vestido Casual Rayas', 'Vestido Lencero Beige',\n  'Jean Mom Fit', 'Jean Skinny Negro', 'Jean Wide Leg',\n  'Blusa Satinada Pastel', 'Blusa Campesina Blanca', 'Blusa Crop Flores', 'Blusón Oversize Beige', 'Blusón Estampado',\n  'Tacón Stiletto Negro', 'Tacón Destalonado Nude', 'Sandalia Tacón Dorada',\n  'Sombrero Playero', 'Sombrero Trenzado Rosa', 'Boina Francesa Negra',\n  'Correa Cuero Café', 'Correa Dorada Metálica'\n];\n\nconst replyNorm = reply.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');\n\nconst productosEncontrados = productos.filter(p => {\n  const pNorm = p.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');\n  const palabras = pNorm.split(' ');\n  return palabras.every(palabra => replyNorm.includes(palabra));\n});\n\nif (productosEncontrados.length === 0) {\n  return [{ json: { skip: true, threadId, fecha: new Date().toISOString() } }];\n}\n\nconst productosUnicos = [...new Set(productosEncontrados)];\n\nreturn productosUnicos.map(producto => ({\n  json: { skip: false, producto, threadId, fecha: new Date().toISOString() }\n}));"
+      },
+      "id": "98c0d6b2-aa12-436d-8db3-c0c99efb2709",
+      "name": "Detectar Productos Consultados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -11840,
+        2448
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "hubspot-chat",
+        "options": {}
+      },
+      "id": "a3180d88-275d-4869-b868-be732a293108",
+      "name": "Webhook - Recibir Evento de HubSpot",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -13168,
+        2032
+      ],
+      "webhookId": "cb0cb3d8-c238-4d8e-9c81-1588a8e6c063"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.hubapi.com/conversations/v3/conversations/threads/{{ $json[\"body\"][0][\"objectId\"] }}/messages/{{ $json[\"body\"][0][\"messageId\"] }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "c453e044-6317-497b-bfc4-a87faeb01be9",
+      "name": "Obtener Mensaje de HubSpot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -12720,
+        2032
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "ilDsnMgjobxBc6um",
+          "name": "HubSpot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_BASE_ID"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_TABLE_HILOS_ID"
+        },
+        "filterByFormula": "={HubSpot Thread ID}='{{ $json.conversationsThreadId }}'",
+        "options": {}
+      },
+      "id": "d4871c2b-ce79-46d8-b62d-953d01f38809",
+      "name": "Airtable - Buscar Hilo",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -12272,
+        2032
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "XzhOW4GQoOpwkoN9",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_BASE_ID"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_TABLE_HILOS_ID"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "HubSpot Thread ID": "={{ $('Obtener Mensaje de HubSpot').item.json.conversationsThreadId }}",
+            "Fecha Creación": "={{ $now }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "192043e2-2260-47a5-a563-aa690eb6afad",
+      "name": "Airtable - Crear Hilo",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -11824,
+        2096
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "XzhOW4GQoOpwkoN9",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_BASE_ID"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_TABLE_MENSAJES_ID"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Thread ID": "={{ $('Airtable - Buscar Hilo').item.json.id ?? $('Airtable - Crear Hilo').item.json.id }}",
+            "Rol": "user",
+            "Fecha": "={{ $now }}",
+            "Contenido": "={{ $('Obtener Mensaje de HubSpot').item.json.text }}",
+            "Nombre Cliente": "={{ $('Airtable - Buscar Hilo').item.json.fields?.['Nombre Cliente'] ?? $('Airtable - Buscar Hilo').item.json['Nombre Cliente'] ?? '' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Thread ID",
+              "displayName": "Thread ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Rol",
+              "displayName": "Rol",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Nombre Cliente",
+              "displayName": "Nombre Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha",
+              "displayName": "Fecha",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Contenido",
+              "displayName": "Contenido",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "ccd8b4bc-1d54-4380-b8f0-386ad0afbe8b",
+      "name": "Airtable - Guardar Mensaje de Usuario",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -11600,
+        2032
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "XzhOW4GQoOpwkoN9",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_BASE_ID"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_TABLE_MENSAJES_ID"
+        },
+        "filterByFormula": "={Thread ID}=\"{{ $('Airtable - Buscar Hilo').item.json.id ?? $('Airtable - Crear Hilo').item.json.id }}\"",
+        "options": {}
+      },
+      "id": "0407c6d1-59bb-44e1-a66c-97dfef7c04be",
+      "name": "Airtable - Obtener Historial",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -11376,
+        2032
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "XzhOW4GQoOpwkoN9",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const historial = $input.all();\nconst inventario = $('Google Sheets - Obtener Inventario').all();\nconst datosHilo = $('Airtable - Obtener Datos del Hilo').item.json;\nconst mensajeActual = $('Obtener Mensaje de HubSpot').item.json.text;\n\nlet nombreCliente = datosHilo.fields?.['Nombre Cliente'] || datosHilo['Nombre Cliente'] || '';\n\nif (!nombreCliente) {\n  for (const item of historial) {\n    const nombre = item.json['Nombre Cliente'] || item.json.fields?.['Nombre Cliente'] || '';\n    if (nombre) { nombreCliente = nombre; break; }\n  }\n}\n\nif (!nombreCliente) {\n  const patron = /(?:soy|me llamo|mi nombre es|soy la|soy el)\\s+([A-Za-záéíóúÁÉÍÓÚñÑ]+)/i;\n  for (const item of historial) {\n    const contenido = item.json.Contenido || item.json.fields?.Contenido || '';\n    const rol = item.json.Rol || item.json.fields?.Rol || '';\n    if (rol === 'user') {\n      const match = contenido.match(patron);\n      if (match) { nombreCliente = match[1]; break; }\n    }\n  }\n  if (!nombreCliente) {\n    const match = mensajeActual.match(/(?:soy|me llamo|mi nombre es|soy la|soy el)\\s+([A-Za-záéíóúÁÉÍÓÚñÑ]+)/i);\n    if (match) nombreCliente = match[1];\n  }\n}\n\nconst inventarioTexto = inventario.map(item => {\n  const p = item.json;\n  const descripcion = p.DESCRIPCION || p.Descripcion || p.descripcion || p.DESCRIPTION || p.Description || '';\n  const precio = p.PRECIO || p.Precio || p.precio || '';\n  const producto = p.PRODUCTO || p.Producto || p.producto || '';\n  const disponible = p.DISPONIBLE || p.Disponible || p.disponible || '';\n  return '- ' + producto + ': ' + precio + ' | ' + descripcion + ' | Disponible: ' + disponible;\n}).join('\\n');\n\nconst saludoNombre = nombreCliente \n  ? 'El nombre de la clienta es ' + nombreCliente + '. Úsalo de forma natural y ocasional.\\n'\n  : 'Aún no sabes el nombre de la clienta. En el primer mensaje SIEMPRE pregunta su nombre y qué está buscando en un solo mensaje corto. Ejemplo: \"¡Hola! Soy Luna 👗 ¿Cuál es tu nombre y en qué puedo ayudarte hoy?\". Una vez que te diga el nombre, úsalo y nunca lo vuelvas a pedir.\\n';\n\nconst systemPrompt = \n  'Eres Luna, la asistente virtual de BoutiqueLuna, una tienda de ropa y accesorios para dama. TU nombre es Luna, no el de la clienta.\\n' +\n  'Tu rol es atender a las clientas de manera amigable, calida y cercana.\\n' +\n  'Responde siempre en español, de forma breve y sin saludar en cada mensaje.\\n' +\n  'Nunca actues como clienta, siempre eres la asesora.\\n' +\n  'Solo preséntate como Luna en el primer mensaje junto con la pregunta del nombre. Nunca te presentes de nuevo si ya hay mensajes previos.\\n' +\n  saludoNombre +\n  'Recuerda siempre el contexto completo de la conversacion.\\n' +\n  'Solo ofrece productos disponibles (DISPONIBLE: SI).\\n' +\n  'No inventes productos ni precios.\\n' +\n  'REGLA - CIERRE DE VENTA: Si en el mensaje anterior mencionaste UN producto específico y la clienta responde con \"solo ese\", \"solo el jean\", \"solo la blusa\", \"solo el vestido\", \"ese\", \"ese mismo\", \"quiero ese\", \"me lo llevo\", \"con ese\", \"sí\", \"de acuerdo\", eso significa que YA ELIGIÓ ese producto. NO vuelvas a listar nada. Confirma con entusiasmo el producto que acabas de mencionar y da el WhatsApp YOUR_WHATSAPP_NUMBER para coordinar el pedido. EJEMPLO: si dijiste \"Jean Mom Fit por 95000\" y la clienta dice \"solo el jean\", confirma el Jean Mom Fit y da el WhatsApp.\\n' +\n  'REGLA - NO OFRECER DE MÁS: Cuando la clienta eligió un producto específico, NO sugieras otros productos adicionales a menos que ella lo pida explícitamente.\\n' +\n  'REGLA - POST VENTA: Después de dar el WhatsApp, si la clienta dice \"gracias\" u otras despedidas, responde de forma cálida y breve. NO te vuelvas a presentar ni preguntes en qué puedes ayudar como si fuera conversación nueva.\\n' +\n  'REGLA - NOMBRE: Nunca vuelvas a pedir el nombre si ya fue mencionado antes en la conversación.\\n' +\n  'INVENTARIO ACTUAL:\\n' + inventarioTexto;\n\nconst messages = [{ role: 'system', content: systemPrompt }];\n\nconst historialOrdenado = [...historial].sort((a, b) => {\n  const fechaA = new Date(a.json.Fecha || a.json.fields?.Fecha || 0);\n  const fechaB = new Date(b.json.Fecha || b.json.fields?.Fecha || 0);\n  return fechaA - fechaB;\n});\n\nlet mensajeActualUsado = false;\nconst historialSinActual = historialOrdenado.filter(item => {\n  const rol = item.json.Rol || item.json.fields?.Rol;\n  const contenido = item.json.Contenido || item.json.fields?.Contenido;\n  if (!mensajeActualUsado && rol === 'user' && contenido === mensajeActual) {\n    mensajeActualUsado = true;\n    return false;\n  }\n  return true;\n});\n\nfor (const item of historialSinActual) {\n  const rol = item.json.Rol || item.json.fields?.Rol;\n  const contenido = item.json.Contenido || item.json.fields?.Contenido;\n  if (rol && contenido) {\n    messages.push({ role: rol, content: contenido });\n  }\n}\n\nmessages.push({ role: 'user', content: mensajeActual });\n\nreturn [{\n  json: {\n    nombreCliente: nombreCliente,\n    groqBody: JSON.stringify({\n      model: 'llama-3.3-70b-versatile',\n      messages: messages,\n      temperature: 0.3,\n      max_tokens: 1024\n    })\n  }\n}];"
+      },
+      "id": "17e18710-cde0-4d87-8f7c-9ca5d73c35d0",
+      "name": "Código - Construir Mensajes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -10704,
+        2032
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $json.groqBody }}",
+        "options": {}
+      },
+      "id": "3b030dbe-683b-4a69-8edf-e4378258f152",
+      "name": "Groq - Chat con Llama 3.3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -13248,
+        2448
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "MMWaYm5atvLdPYdy",
+          "name": "Groq"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const responseText = $input.item.json.choices[0].message.content;\nconst hubspotMsg = $('Obtener Mensaje de HubSpot').item.json;\nconst userMessage = hubspotMsg.text || '';\n\nlet nombreCliente = '';\nlet reply = responseText;\n\n// Detectar nombre del mensaje del usuario con patrones naturales\nconst patronesPregunta = [\n  /(?:soy|me llamo|mi nombre es|soy la|soy el)\\s+([A-Za-záéíóúÁÉÍÓÚñÑ]+)/i,\n];\n\nfor (const patron of patronesPregunta) {\n  const match = userMessage.match(patron);\n  if (match) {\n    nombreCliente = match[1].trim();\n    break;\n  }\n}\n\nreturn [{\n  json: {\n    reply: reply,\n    nombreCliente: nombreCliente,\n    hubspotBody: JSON.stringify({\n      text: reply,\n      type: 'MESSAGE',\n      channelId: hubspotMsg.channelId,\n      channelAccountId: hubspotMsg.channelAccountId,\n      senderActorId: 'YOUR_HUBSPOT_BOT_ACTOR_ID'\n    })\n  }\n}];"
+      },
+      "id": "074800e1-68ad-46c2-a026-aa15c017d515",
+      "name": "Código - Extraer Respuesta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -13024,
+        2448
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_BASE_ID"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_AIRTABLE_TABLE_MENSAJES_ID"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Thread ID": "={{ $('Airtable - Buscar Hilo').item.json.id ?? $('Airtable - Crear Hilo').item.json.id }}",
+            "Fecha": "={{ $now }}",
+            "Nombre Cliente": "=Luna",
+            "Rol": "assistant",
+            "Contenido": "={{ $('Código - Extraer Respuesta').item.json.reply }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Thread ID",
+              "displayName": "Thread ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Rol",
+              "displayName": "Rol",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Nombre Cliente",
+              "displayName": "Nombre Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha",
+              "displayName": "Fecha",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Contenido",
+              "displayName": "Contenido",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "cc5d0d6a-ba40-4dd7-b823-0dda53d725ae",
+      "name": "Airtable - Guardar Respuesta del Asistente",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -12352,
+        2448
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "XzhOW4GQoOpwkoN9",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.hubapi.com/conversations/v3/conversations/threads/{{ $(\"Obtener Mensaje de HubSpot\").item.json.conversationsThreadId }}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $('Código - Extraer Respuesta').item.json.hubspotBody }}",
+        "options": {}
+      },
+      "id": "f4ef09ab-5227-4853-a537-719e744feb75",
+      "name": "Responder Mensaje en HubSpot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -12112,
+        2448
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "ilDsnMgjobxBc6um",
+          "name": "HubSpot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 🔔 Trigger\nRecibe eventos de HubSpot vía Webhook.\nFiltrar solo mensajes nuevos de usuarios.",
+        "height": 156,
+        "width": 296,
+        "color": 3
+      },
+      "id": "2d885b65-0339-4da7-a6e5-ab92c4942ce4",
+      "name": "Nota - Trigger",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -13264,
+        1888
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🔍 Buscar Hilo en Airtable\nBusca si ya existe un hilo para esta conversación de HubSpot.\nSi no existe, se crea uno nuevo.",
+        "height": 182,
+        "width": 272,
+        "color": 4
+      },
+      "id": "f0aef4d6-e694-4be3-b28c-efbd1c568475",
+      "name": "Nota - Verificar Hilo",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -12352,
+        1856
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📜 Recuperar Historial\nObtiene todos los mensajes anteriores del hilo ordenados por fecha.\nSe envían completos a Groq en cada llamada.",
+        "height": 150,
+        "width": 320,
+        "color": 5
+      },
+      "id": "dec0c4f1-8596-460b-83b8-07c906aabc61",
+      "name": "Nota - Historial",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -11264,
+        1888
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🤖 Groq - Llama 3.3 70B\nEnvía el historial completo + mensaje actual.\nModelo: llama-3.3-70b-versatile\n⚠️ Requiere API Key de Groq en credenciales.",
+        "width": 320,
+        "color": 6
+      },
+      "id": "a7698157-a4aa-4fc4-9d89-5f5ffaba5050",
+      "name": "Nota - Groq",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -13360,
+        2304
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 💾 Guardar y Responder\nGuarda la respuesta del asistente en Airtable\ny la publica de vuelta en HubSpot.",
+        "height": 156,
+        "width": 316,
+        "color": 3
+      },
+      "id": "3b593652-aab6-4cb6-b0de-24e6b26dc92d",
+      "name": "Nota - Guardar y Responder",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -12208,
+        2320
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0f1a0158-604a-42c7-814e-70dd21bee7dd",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -12048,
+        2032
+      ],
+      "id": "7ef7e997-18af-4c69-8ba5-97e76d4f91bf",
+      "name": "¿Hilo Encontrado?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5ef6c38e-2a44-437a-9384-c182076c71b3",
+              "leftValue": "=={{ $json.senders[0].actorId }}",
+              "rightValue": "A-",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -12496,
+        2032
+      ],
+      "id": "24c021df-b588-4ce8-b016-141d69aa14ec",
+      "name": "¿Existe el Hilo?"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.item.json.body;\nconst userMessage = body.find(m => m.messageType === 'MESSAGE');\n\nif (!userMessage) {\n  return [];\n}\n\n// No filtramos por messageId porque HubSpot usa formato UUID (con guiones)\n// tanto para mensajes de usuario como del bot.\n// El filtro real por senderActorId (\"A-\") lo hace el nodo siguiente.\nreturn [{ json: { ...$input.item.json, userMessage } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -12944,
+        2032
+      ],
+      "id": "bd8e632e-3c1a-43a7-9421-26d29cacde14",
+      "name": "Filtrar Mensaje de Usuario"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 689940598,
+          "mode": "list",
+          "cachedResultName": "Asistente Virtual Ventas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=689940598"
+        },
+        "options": {}
+      },
+      "id": "a9ccde47-4bbe-4fd8-a05f-94fac60f1e3f",
+      "name": "Google Sheets - Obtener Inventario",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -10928,
+        2032
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KFpssmYavH3XEiQ5",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Airtable - Buscar Estadística Existente": {
+      "main": [
+        [
+          {
+            "node": "¿Estadística Ya Existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Tiene Nombre?": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Actualizar Nombre Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Airtable - Guardar Respuesta del Asistente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Actualizar Nombre Cliente": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Guardar Respuesta del Asistente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Obtener Datos del Hilo": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets - Obtener Inventario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Estadística Ya Existe?": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Guardar Estadística",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Hay Productos?": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Buscar Estadística Existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detectar Productos Consultados": {
+      "main": [
+        [
+          {
+            "node": "¿Hay Productos?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook - Recibir Evento de HubSpot": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Mensaje de Usuario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Mensaje de HubSpot": {
+      "main": [
+        [
+          {
+            "node": "¿Existe el Hilo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Buscar Hilo": {
+      "main": [
+        [
+          {
+            "node": "¿Hilo Encontrado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Crear Hilo": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Guardar Mensaje de Usuario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Guardar Mensaje de Usuario": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Obtener Historial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Obtener Historial": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Obtener Datos del Hilo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Código - Construir Mensajes": {
+      "main": [
+        [
+          {
+            "node": "Groq - Chat con Llama 3.3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq - Chat con Llama 3.3": {
+      "main": [
+        [
+          {
+            "node": "Código - Extraer Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Código - Extraer Respuesta": {
+      "main": [
+        [
+          {
+            "node": "¿Tiene Nombre?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Guardar Respuesta del Asistente": {
+      "main": [
+        [
+          {
+            "node": "Responder Mensaje en HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responder Mensaje en HubSpot": {
+      "main": [
+        [
+          {
+            "node": "Detectar Productos Consultados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Hilo Encontrado?": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Guardar Mensaje de Usuario",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Airtable - Crear Hilo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Existe el Hilo?": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Buscar Hilo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Mensaje de Usuario": {
+      "main": [
+        [
+          {
+            "node": "Obtener Mensaje de HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets - Obtener Inventario": {
+      "main": [
+        [
+          {
+            "node": "Código - Construir Mensajes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "7e9137de-0b7d-45b1-af99-8bbba9901f38",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d03888bb0cda25df4a1ad3851243475954ca91ddd3233540aafb991b7f0a1834"
+  },
+  "id": "UM6U97y1oX3wktsb",
+  "tags": []
+}
