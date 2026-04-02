@@ -198,47 +198,47 @@ Visualización de los productos más consultados por los clientes durante las co
 ## 📸 Pantallazos del Proyecto
 
 ### 1. Flujo Completo en n8n
-> ![Flujo Completo](images/01_flujo_completo.png)
+> ![Flujo Completo](Imagenes/01_flujo_completo.png)
 
 ---
 
 ### 2. Conversación en HubSpot — Parte 1
-> ![Conversación HubSpot 1](images/02_conversacion_hubspot_1.png)
+> ![Conversación HubSpot 1](Imagenes/02_conversacion_hubspot_1.png)
 
 ---
 
 ### 3. Conversación en HubSpot — Parte 2
-> ![Conversación HubSpot 2](images/03_conversacion_hubspot_2.png)
+> ![Conversación HubSpot 2](Imagenes/03_conversacion_hubspot_2.png)
 
 ---
 
 ### 4. Conversación en HubSpot — Parte 3
-> ![Conversación HubSpot 3](images/04_conversacion_hubspot_3.png)
+> ![Conversación HubSpot 3](Imagenes/04_conversacion_hubspot_3.png)
 
 ---
 
 ### 5. Tabla Hilos — Airtable
-> ![Tabla Hilos](images/05_tabla_hilos.png)
+> ![Tabla Hilos](Imagenes/05_tabla_hilos.png)
 
 ---
 
 ### 6. Tabla Mensajes — Airtable
-> ![Tabla Mensajes](images/06_tabla_mensajes.png)
+> ![Tabla Mensajes](Imagenes/06_tabla_mensajes.png)
 
 ---
 
 ### 7. Tabla Estadísticas — Airtable
-> ![Tabla Estadísticas](images/07_tabla_estadisticas.png)
+> ![Tabla Estadísticas](Imagenes/07_tabla_estadisticas.png)
 
 ---
 
 ### 8. Gráfico de Productos Consultados
-> ![Gráfico Estadísticas](images/08_grafico_estadisticas.png)
+> ![Gráfico Estadísticas](Imagenes/08_grafico_estadisticas.png)
 
 ---
 
 ### 9. Inventario en Google Sheets
-> ![Inventario Google Sheets](images/09_inventario_google_sheets.png)
+> ![Inventario Google Sheets](Imagenes/09_inventario_google_sheets.png)
 
 ---
 
